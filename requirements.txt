@@ -1,0 +1,8 @@
+# 安装后首次运行会下载检测/识别模型到 ~/.paddlex 等目录
+paddlepaddle
+paddleocr>=3.0
+opencv-python>=4.5
+numpy
+pillow>=9.0
+flask>=2.0
+python-pptx>=0.6.21

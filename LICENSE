@@ -1,0 +1,37 @@
+MIT License
+
+Copyright (c) 2026 图片可编辑项目贡献者（The 图片可编辑 project contributors）
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+
+
+1. **许可范围**：在遵守下列条件的前提下，任何人可以免费获得本软件及其文档的副本，并可以无限制地处理本软件（包括但不限于使用、复制、修改、合并、发表、分发、再许可和/或销售本软件副本），以及允许获得本软件的人同样行事。
+
+2. **商用与再发布时的「注明」义务**：凡以**源代码或二进制**形式**再分发**本软件（含用于**商业产品或服务**），必须在每一份副本中**显著保留**：
+   - 上文英文中的 **Copyright** 行（版权声明）；且
+   - **完整的本许可正文**（或随附单独文件，但该文件须随产品一并提供且用户或下游开发者可合理取得）。
+
+   建议在面向终端用户的「关于 / 法律信息 / 致谢」或产品说明书中，同时写明**本软件名称**及**本仓库或发布地址**（若有），以便识别来源。不得以任何方式暗示版权方为您的产品背书。
+
+3. **免责声明**：本软件按「原样」提供，不作任何明示或默示担保；在任何情况下，作者或版权持有人均不对因本软件或与本软件有关的任何索赔、损害或其他责任负责。
+
+可将首段版权声明中的「图片可编辑项目贡献者」替换为您本人或权利主体的名称。
