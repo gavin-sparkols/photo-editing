@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>可编辑字层</title>
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+  <body>
+    <div class="shell" id="app" data-film="none">
+      <aside class="sidebar" aria-label="功能">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">◱</span>
+          <div class="brand__text">
+            <span class="brand__name">可编辑字层</span>
+            <span class="brand__sub">Image · Text</span>
+          </div>
+        </div>
+
+        <details class="s-panel" open>
+          <summary class="s-panel__title">上传与识别</summary>
+          <div class="s-panel__body s-panel__body--upload">
+            <div class="upload-ocr" id="uploadOcr">
+              <label class="upload-ocr__pick" for="fileImage">
+                <input
+                  type="file"
+                  id="fileImage"
+                  class="upload-ocr__input"
+                  accept="image/*"
+                  multiple
+                />
+                <span class="upload-ocr__icon" aria-hidden="true"
+                  ><svg
+                    class="upload-ocr__svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M12 3v12M8 7l4-4 4 4" />
+                    <rect x="3" y="16" width="18" height="4" rx="1" />
+                  </svg></span>
+                <span class="upload-ocr__hint">点击或拖入，支持多选</span>
+                <span
+                  class="upload-ocr__name"
+                  id="fileImageName"
+                  data-empty="未选择"
+                >未选择</span>
+              </label>
+              <button
+                type="button"
+                id="btnOcr"
+                class="btn btn-ocr"
+                title="需本机运行 editor_server"
+              >
+                开始识别
+              </button>
+            </div>
+          </div>
+        </details>
+
+        <details class="s-panel">
+          <summary class="s-panel__title">导出</summary>
+          <div class="s-panel__body s-panel__body--stack">
+            <button type="button" id="btnLayout" class="btn btn--block btn--line">
+              下载 JSON
+            </button>
+            <button type="button" id="btnPng" class="btn btn--block btn--line">
+              下载 PNG
+            </button>
+            <button type="button" id="btnPptx" class="btn btn--block btn--line">
+              下载 PPTX
+            </button>
+          </div>
+        </details>
+      </aside>
+
+      <main class="main" id="main">
+        <p id="status" class="status-pill" aria-live="polite"></p>
+
+        <div class="stage-tools" id="stageToolbar" hidden>
+          <span class="stage-tools__k">视图缩放</span>
+          <div class="stage-tools__g" role="group" aria-label="缩放">
+            <button
+              type="button"
+              class="btn-zoom"
+              id="btnZoomOut"
+              title="Ctrl + 滚轮"
+              aria-label="缩小"
+            >
+              −
+            </button>
+            <output class="stage-tools__out" id="zoomPct">100%</output>
+            <button type="button" class="btn-zoom" id="btnZoomIn" aria-label="放大">
+              +
+            </button>
+            <button
+              type="button"
+              class="btn-zoom btn-zoom--reset"
+              id="btnZoomReset"
+              title="适应当前窗口宽度"
+              aria-label="重置为适配"
+            >
+              适配
+            </button>
+          </div>
+          <span class="stage-tools__hint" title="平移：空白处拖拽、双指/滚轮平移、中键或空格+左键。缩放：Ctrl+滚轮"
+            >画布拖移 · Ctrl+滚轮缩放</span>
+          <div class="stage-tools__textbar" id="stageTextBar" hidden>
+            <span class="stage-tools__k stage-tools__k--sub">文字</span>
+            <button type="button" class="btn-txt" id="fltAddText" disabled>＋ 文本框</button>
+            <label class="flt-lab">
+              字号
+              <select id="fltFontPreset" class="flt-select" disabled title="初号/小四…或自动适应框" aria-label="字号"></select>
+            </label>
+            <div class="flt-align" role="group" aria-label="对齐">
+              <button type="button" class="btn-flt-align" data-align="left" title="左对齐" disabled>左</button>
+              <button type="button" class="btn-flt-align" data-align="center" title="居中" disabled>中</button>
+              <button type="button" class="btn-flt-align" data-align="right" title="右对齐" disabled>右</button>
+              <button type="button" class="btn-flt-align" data-align="justify" title="两端对齐" disabled>齐</button>
+            </div>
+            <button type="button" class="btn-txt btn-txt--danger" id="fltDelText" disabled>删除字框</button>
+          </div>
+        </div>
+
+        <div class="main-canvas" id="stage-wrap" tabindex="0" title="空白处左键拖移；滚轮平移；Ctrl+滚轮缩放。Alt+拖空白框选字框；Ctrl+点字框多选。字框未编辑时拖框体移动。">
+          <div class="stages" id="stages" aria-label="识别结果列表"></div>
+        </div>
+      </main>
+
+      <aside class="filmstrip" id="filmstrip" hidden aria-label="页面缩略与排序">
+        <div class="filmstrip__toolbar">
+          <span class="filmstrip__label">页序</span>
+          <button
+            type="button"
+            class="filmstrip__collapse"
+            id="btnFilmstripToggle"
+            aria-pressed="true"
+            title="收起 / 展开缩略条"
+          >
+            ⟨
+          </button>
+        </div>
+        <ul
+          class="filmstrip__list"
+          id="filmstripList"
+          role="list"
+          aria-label="缩略图，可拖放调整顺序，点击定位"
+        ></ul>
+        <div
+          class="filmstrip__footer"
+          id="filmstripFooter"
+          aria-label="向当前项目追加页面"
+        >
+          <input
+            type="file"
+            id="filmstripFileAdd"
+            class="filmstrip__add-input"
+            accept="image/*"
+            multiple
+            tabindex="-1"
+          />
+          <button
+            type="button"
+            class="filmstrip__add-btn"
+            id="btnFilmstripAdd"
+            title="选择图片并识别，追加到页序末尾（不清空已有页）"
+          >
+            ＋ 添加图片
+          </button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 逻辑用：不展示。默认主画布用抹字底（若有）；取消勾选则主画布改原图。右侧缩略始终用原图 URL -->
+    <div class="h-ctl" aria-hidden="true">
+      <input type="checkbox" id="chkUseFilled" checked />
+      <input type="checkbox" id="chkGrid" />
+    </div>
+    <textarea id="jsonPreview" class="h-state" rows="1" cols="1" tabindex="-1" aria-hidden="true" spellcheck="false" autocomplete="off"></textarea>
+    <button type="button" id="btnApplyJson" class="h-state" tabindex="-1" aria-hidden="true" title="应用 JSON"></button>
+
+    <script src="/main.js"></script>
+  </body>
+</html>
